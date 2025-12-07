@@ -1,6 +1,10 @@
 import { pool } from "../../config/db";
+import AutoBookingExpire from "../../middleware/autoBookingExpire";
 
-const createBooking = async (payload: Record<string, unknown>, userPayload: Record<string, unknown>) => {
+const createBooking = async (
+    payload: Record<string, unknown>,
+    userPayload: Record<string, unknown>
+) => {
     const { customer_id, vehicle_id, rent_start_date, rent_end_date } = payload;
     const start_date = new Date(rent_start_date as string);
     const end_date = new Date(rent_end_date as string);
@@ -21,13 +25,13 @@ const createBooking = async (payload: Record<string, unknown>, userPayload: Reco
         if (vehicle.rows.length === 0) {
             return "Vehicle not found";
         }
-        if(userPayload.role ==='customer' && customer_id !== userPayload.id){
-            return "You could booking only your!"
+        if (userPayload.role === "customer" && customer_id !== userPayload.id) {
+            return "You could booking only your!";
         }
         if (vehicle.rows[0].availability_status !== "available") {
             return "Vehicle is not available";
         }
-        
+
         const total_price =
             (vehicle.rows[0].daily_rent_price as number) * number_of_days;
         const status = "active";
@@ -42,10 +46,10 @@ const createBooking = async (payload: Record<string, unknown>, userPayload: Reco
                 status,
             ]
         );
-        await pool.query(`UPDATE Vehicles SET availability_status=$1 WHERE id=$2`, [
-            "booked",
-            vehicle_id,
-        ]);
+        await pool.query(
+            `UPDATE Vehicles SET availability_status=$1 WHERE id=$2`,
+            ["booked", vehicle_id]
+        );
         return {
             ...booking.rows[0],
             rent_start_date: new Date(
@@ -64,6 +68,7 @@ const createBooking = async (payload: Record<string, unknown>, userPayload: Reco
     }
 };
 const getBookings = async (payload: Record<string, unknown>) => {
+    // AutoBookingExpire();
     try {
         if (payload.role === "admin") {
             const bookings = await pool.query(`SELECT * FROM Bookings`);
@@ -144,17 +149,23 @@ const updateBookings = async (
 
     try {
         if (userPayload.role === "customer") {
-
-            const preBooking = await pool.query(`SELECT * FROM Bookings WHERE id=$1`, [bookingId]);
+            const preBooking = await pool.query(
+                `SELECT * FROM Bookings WHERE id=$1`,
+                [bookingId]
+            );
             const bookingData = preBooking.rows[0];
 
-            if(bookingData.length ===0){
-                return 'No booking found';
+            if (bookingData.length === 0) {
+                return "No booking found";
             }
-            const rentStartDate = new Date(bookingData.rent_start_date
+            const rentStartDate = new Date(
+                bookingData.rent_start_date
             ).toLocaleDateString("en-CA");
-            if(bodyPayload.status==='cancelled' && (rentStartDate < formattedDate)){
-                return "You could not cancelled. Your rent already start."
+            if (
+                bodyPayload.status === "cancelled" &&
+                rentStartDate < formattedDate
+            ) {
+                return "You could not cancelled. Your rent already start.";
             }
 
             const booking = await pool.query(
@@ -171,7 +182,6 @@ const updateBookings = async (
                 booking.rows[0].rent_end_date
             ).toLocaleDateString("en-CA");
 
-            
             const newStatus = "available";
             await pool.query(
                 `UPDATE Vehicles SET availability_status=$1 WHERE id=$2`,
