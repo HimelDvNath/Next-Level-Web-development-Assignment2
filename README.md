@@ -74,7 +74,7 @@ A full-stack application designed to manage vehicle rentals for customers and ad
 - install tsx, typescript, express, dotenv, pg, bcryptjs, jsonwebtoken
 - npm run dev
 ---
-##🌐 Usage
+## 🌐 Usage
 -You may run this project locally or directly use the live deployment:
 
 🔗 **Live URL:** https://vehicle-rental-system-nu.vercel.app/
