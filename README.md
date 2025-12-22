@@ -1,6 +1,6 @@
 # Vehicle Rental System
 
-A full-stack application designed to manage vehicle rentals for customers and administrators. The system includes authentication, vehicle management, booking management, and profile handling. The modular structure followed in this project.
+A Backend application designed to manage vehicle rentals for customers and administrators. The system includes authentication, vehicle management, booking management, and profile handling. The modular structure followed in this project.
 
 ---
 
