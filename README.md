@@ -2,8 +2,6 @@
 
 A full-stack application designed to manage vehicle rentals for customers and administrators. The system includes authentication, vehicle management, booking management, and profile handling. The modular structure followed in this project.
 
-🔗 **Live URL:** https://vehicle-rental-system-nu.vercel.app/
-
 ---
 
 ## 🚀 Features
@@ -113,6 +111,6 @@ A full-stack application designed to manage vehicle rentals for customers and ad
 - npm run dev
 ---
 ## 🌐 Usage
--You may run this project locally or directly use the live deployment:
+- You may run this project locally or directly use the live deployment:
 
 🔗 **Live URL:** https://vehicle-rental-system-nu.vercel.app/
