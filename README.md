@@ -8,44 +8,82 @@ A full-stack application designed to manage vehicle rentals for customers and ad
 
 ## 🚀 Features
 
-### 1. Authentication
-- Sign In  
-- Sign Up  
+## 🔐 Authentication
+
+- **POST** `/api/v1/auth/signup`  
+  Register a new user  
+  **Access:** Public
+
+- **POST** `/api/v1/auth/signin`  
+  User login with JWT generation  
+  **Access:** Public
 
 ---
 
-### 2. User Features
-- Update own profile  
-- Create booking  
-- Update own booking (allowed before the `rent_start_date`)  
+## 🚗 Vehicles
+
+- **POST** `/api/v1/vehicles`  
+  Create a new vehicle  
+  **Access:** Admin, User
+
+- **GET** `/api/v1/vehicles`  
+  Retrieve all vehicles  
+  **Access:** Public
+
+- **GET** `/api/v1/vehicles/:vehicleId`  
+  Retrieve a specific vehicle  
+  **Access:** Public
+
+- **PUT** `/api/v1/vehicles/:vehicleId`  
+  Update a vehicle  
+  **Access Rules:**  
+  - Admin: Can update any vehicle  
+  - User: Can update only vehicles they own
+
+- **DELETE** `/api/v1/vehicles/:vehicleId`  
+  Delete a vehicle  
+  **Access:** Admin only  
+  **Restriction:** Vehicle must have no active bookings
 
 ---
 
-### 3. Vehicle Management
-- Create vehicle (Admin & User)  
-- View all vehicles (Public)  
-- View vehicle details (Public)  
-- Update vehicle  
-  - Admin → All vehicles  
-  - User → Own vehicles  
-- Delete vehicle (only when vehicle is not booked)
+## 👤 Users
+
+- **GET** `/api/v1/users`  
+  Retrieve all users  
+  **Access:** Admin only
+
+- **PUT** `/api/v1/users/:userId`  
+  Update user profile  
+  **Access Rules:**  
+  - Admin: Can update any user  
+  - User: Can update only their own profile
+
+- **DELETE** `/api/v1/users/:userId`  
+  Delete a user  
+  **Access:** Admin only  
+  **Restriction:** User must have no active bookings
 
 ---
 
-### 4. Booking Management
-- Create booking  
-  - Customer → Own bookings  
-  - Admin → All bookings  
-- View bookings  
-  - Admin → All bookings  
-  - Customer → Own bookings  
-- Update bookings  
-  - Admin → All bookings  
-  - Customer → Own bookings  
-  - When a booking is **cancelled** or **returned**, the vehicle status automatically becomes **available**
+## 📅 Bookings
 
----
-### 5. Auto Booking Expire system
+- **POST** `/api/v1/bookings`  
+  Create a booking  
+  **Access:** Customer, Admin
+
+- **GET** `/api/v1/bookings`  
+  Retrieve bookings  
+  **Access Rules:**  
+  - Admin: View all bookings  
+  - Customer: View only their own bookings
+
+- **PUT** `/api/v1/bookings/:bookingId`  
+  Update a booking  
+  **Access:** Role-based  
+  **Restriction:** Allowed only before the rental start date
+
+### Auto Booking Expire system
 - when today's date cross the return date. The bookings auto going to returned mode and also Vehicle satus will available state.
 ---
 ## 🧰 Technology Stack
